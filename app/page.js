@@ -75,10 +75,11 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/95 text-white backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-blue-700">
             <GraduationCap className="h-7 w-7" />
           </div>
+
           <div className="leading-tight">
             <p className="text-lg font-black tracking-wide">
               MATHS <span className="text-blue-400">GURU</span>
@@ -90,7 +91,7 @@ function Header() {
         </a>
 
         <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-200 lg:flex">
-          <a href="#" className="text-blue-400">
+          <a href="/" className="text-blue-400">
             Home
           </a>
           <a href="#live-lessons" className="hover:text-blue-400">
@@ -102,7 +103,7 @@ function Header() {
           <a href="#curricula" className="hover:text-blue-400">
             Curricula
           </a>
-          <a href="#assignments" className="hover:text-blue-400">
+          <a href="/assignments" className="hover:text-blue-400">
             Assignments
           </a>
           <a href="#about" className="hover:text-blue-400">
@@ -120,6 +121,7 @@ function Header() {
           >
             Log In
           </a>
+
           <a
             href="#contact"
             className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-500"
@@ -162,6 +164,7 @@ function Hero() {
               Join a Live Lesson
               <MonitorPlay className="h-5 w-5" />
             </a>
+
             <a
               href="#resources"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 px-7 py-4 font-bold text-white hover:bg-white/10"
@@ -172,10 +175,27 @@ function Hero() {
           </div>
 
           <div className="mt-10 grid max-w-2xl grid-cols-2 gap-4 border-t border-white/10 pt-6 md:grid-cols-4">
-            <HeroStat icon={<MonitorPlay />} title="Live Lessons" text="Interactive learning" />
-            <HeroStat icon={<BookOpen />} title="Resources" text="Videos, notes & more" />
-            <HeroStat icon={<UploadCloud />} title="Assignments" text="Upload & get feedback" />
-            <HeroStat icon={<Trophy />} title="Exam Prep" text="Better results" />
+            <HeroStat
+              icon={<MonitorPlay />}
+              title="Live Lessons"
+              text="Interactive learning"
+            />
+            <HeroStat
+              icon={<BookOpen />}
+              title="Resources"
+              text="Videos, notes & more"
+            />
+            <HeroStat
+              icon={<UploadCloud />}
+              title="Assignments"
+              text="Upload & get feedback"
+              href="/assignments"
+            />
+            <HeroStat
+              icon={<Trophy />}
+              title="Exam Prep"
+              text="Better results"
+            />
           </div>
         </div>
 
@@ -192,6 +212,7 @@ function Hero() {
                   </h2>
                   <p className="mt-2 text-slate-600">Today, 4:00 PM</p>
                 </div>
+
                 <div className="rounded-2xl bg-blue-600 p-4 text-white">
                   <CalendarDays className="h-7 w-7" />
                 </div>
@@ -212,13 +233,18 @@ function Hero() {
                   icon={<FileText className="h-5 w-5" />}
                   title="Assignment support"
                   text="Submit work and receive detailed feedback."
+                  href="/assignments"
                 />
               </div>
 
               <div className="mt-8 rounded-2xl bg-slate-950 p-5 text-white">
-                <p className="text-sm text-slate-300">Contact Maths Guru Academy</p>
+                <p className="text-sm text-slate-300">
+                  Contact Maths Guru Academy
+                </p>
                 <p className="mt-2 font-bold">0704155710</p>
-                <p className="text-sm text-slate-300">mathsguruacademy@gmail.com</p>
+                <p className="text-sm text-slate-300">
+                  mathsguruacademy@gmail.com
+                </p>
               </div>
             </div>
           </div>
@@ -255,6 +281,7 @@ function SuccessSection() {
             icon={<UploadCloud />}
             title="Assignment Support"
             text="Upload assignments for marking, feedback, and improvement."
+            href="/assignments"
           />
           <FeatureCard
             color="bg-orange-600"
@@ -316,7 +343,9 @@ function ResourcesSection() {
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-black">What You’ll Find in Resources</h2>
+            <h2 className="text-2xl font-black">
+              What You’ll Find in Resources
+            </h2>
             <a href="#contact" className="text-sm font-bold text-blue-600">
               View all resources →
             </a>
@@ -329,7 +358,9 @@ function ResourcesSection() {
                   <PlayCircle className="h-10 w-10 text-blue-400" />
                 </div>
                 <h3 className="mt-3 font-black">{item.title}</h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">{item.text}</p>
+                <p className="mt-1 text-sm leading-6 text-slate-600">
+                  {item.text}
+                </p>
               </div>
             ))}
           </div>
@@ -339,9 +370,24 @@ function ResourcesSection() {
           <h2 className="text-2xl font-black">How It Works</h2>
 
           <div className="mt-6 space-y-6">
-            <Step number="1" color="bg-blue-600" title="Choose What You Need" text="Pick live lesson, resource, or assignment support." />
-            <Step number="2" color="bg-emerald-600" title="Learn & Practise" text="Attend lessons, access resources, and practise questions." />
-            <Step number="3" color="bg-purple-600" title="Improve & Succeed" text="Get feedback, track progress, and achieve your goals." />
+            <Step
+              number="1"
+              color="bg-blue-600"
+              title="Choose What You Need"
+              text="Pick live lesson, resource, or assignment support."
+            />
+            <Step
+              number="2"
+              color="bg-emerald-600"
+              title="Learn & Practise"
+              text="Attend lessons, access resources, and practise questions."
+            />
+            <Step
+              number="3"
+              color="bg-purple-600"
+              title="Improve & Succeed"
+              text="Get feedback, track progress, and achieve your goals."
+            />
           </div>
         </div>
       </div>
@@ -358,13 +404,15 @@ function AssignmentSection() {
             <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-3xl bg-blue-100 text-blue-600">
               <UploadCloud className="h-12 w-12" />
             </div>
+
             <div>
               <h2 className="text-2xl font-black">Upload Your Assignment</h2>
               <p className="mt-2 text-slate-600">
                 Submit completed work and get detailed feedback from your tutor.
               </p>
+
               <a
-                href="#contact"
+                href="/assignments"
                 className="mt-4 inline-flex rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500"
               >
                 Upload Now
@@ -392,10 +440,14 @@ function CTASection() {
             <div className="hidden h-20 w-20 items-center justify-center rounded-3xl bg-white text-blue-700 sm:flex">
               <GraduationCap className="h-11 w-11" />
             </div>
+
             <div>
-              <h2 className="text-3xl font-black">Ready to Improve in Maths?</h2>
+              <h2 className="text-3xl font-black">
+                Ready to Improve in Maths?
+              </h2>
               <p className="mt-2 text-blue-50">
-                Join live lessons, access resources, submit assignments, and prepare for exams.
+                Join live lessons, access resources, submit assignments, and
+                prepare for exams.
               </p>
             </div>
           </div>
@@ -421,6 +473,7 @@ function Footer() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-700">
               <GraduationCap className="h-6 w-6" />
             </div>
+
             <div>
               <p className="font-black">
                 MATHS <span className="text-blue-400">GURU</span>
@@ -430,6 +483,7 @@ function Footer() {
               </p>
             </div>
           </div>
+
           <p className="mt-5 text-sm leading-7 text-slate-300">
             Empowering students to master maths and achieve excellence.
           </p>
@@ -437,30 +491,53 @@ function Footer() {
 
         <FooterColumn
           title="Quick Links"
-          links={["Live Lessons", "Resources", "Assignments", "Curricula", "About Us"]}
+          links={[
+            { label: "Live Lessons", href: "#live-lessons" },
+            { label: "Resources", href: "#resources" },
+            { label: "Assignments", href: "/assignments" },
+            { label: "Curricula", href: "#curricula" },
+            { label: "About Us", href: "#about" },
+          ]}
         />
+
         <FooterColumn
           title="Curricula"
-          links={["CBC", "8-4-4 / KCSE", "IGCSE", "Cambridge A Level", "IB", "SAT / AP Prep"]}
+          links={[
+            { label: "CBC", href: "#curricula" },
+            { label: "8-4-4 / KCSE", href: "#curricula" },
+            { label: "IGCSE", href: "#curricula" },
+            { label: "Cambridge A Level", href: "#curricula" },
+            { label: "IB", href: "#curricula" },
+            { label: "SAT / AP Prep", href: "#curricula" },
+          ]}
         />
+
         <FooterColumn
           title="Support"
-          links={["FAQs", "How It Works", "Privacy Policy", "Terms of Service"]}
+          links={[
+            { label: "FAQs", href: "#contact" },
+            { label: "How It Works", href: "#resources" },
+            { label: "Privacy Policy", href: "#contact" },
+            { label: "Terms of Service", href: "#contact" },
+          ]}
         />
 
         <div>
           <h3 className="font-black">Contact Us</h3>
+
           <div className="mt-5 space-y-4 text-sm text-slate-300">
             <p className="flex items-center gap-3">
               <Phone className="h-4 w-4 text-blue-400" />
               <a href="tel:0704155710">0704155710</a>
             </p>
+
             <p className="flex items-center gap-3">
               <Mail className="h-4 w-4 text-blue-400" />
               <a href="mailto:mathsguruacademy@gmail.com">
                 mathsguruacademy@gmail.com
               </a>
             </p>
+
             <p className="flex items-center gap-3">
               <MapPin className="h-4 w-4 text-blue-400" />
               Nairobi, Kenya
@@ -476,51 +553,98 @@ function Footer() {
   );
 }
 
-function HeroStat({ icon, title, text }) {
-  return (
-    <div className="flex items-start gap-3">
+function HeroStat({ icon, title, text, href }) {
+  const content = (
+    <>
       <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white">
         {React.cloneElement(icon, { className: "h-4 w-4" })}
       </div>
+
       <div>
         <p className="text-sm font-black">{title}</p>
         <p className="text-xs text-slate-400">{text}</p>
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <a href={href} className="flex items-start gap-3 hover:opacity-80">
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="flex items-start gap-3">{content}</div>;
 }
 
-function HeroCard({ icon, title, text }) {
-  return (
-    <div className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">
+function HeroCard({ icon, title, text, href }) {
+  const content = (
+    <>
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
         {icon}
       </div>
+
       <div>
         <h3 className="font-black">{title}</h3>
         <p className="mt-1 text-sm text-slate-600">{text}</p>
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <div className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">{content}</div>;
 }
 
 function SectionTitle({ title, text }) {
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <h2 className="text-3xl font-black tracking-tight md:text-4xl">{title}</h2>
+      <h2 className="text-3xl font-black tracking-tight md:text-4xl">
+        {title}
+      </h2>
       {text && <p className="mt-3 text-slate-600">{text}</p>}
     </div>
   );
 }
 
-function FeatureCard({ color, icon, title, text }) {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-      <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-xl ${color} text-white`}>
+function FeatureCard({ color, icon, title, text, href }) {
+  const content = (
+    <>
+      <div
+        className={`mb-5 flex h-14 w-14 items-center justify-center rounded-xl ${color} text-white`}
+      >
         {React.cloneElement(icon, { className: "h-7 w-7" })}
       </div>
+
       <h3 className="text-lg font-black">{title}</h3>
       <p className="mt-3 leading-7 text-slate-600">{text}</p>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+      {content}
     </div>
   );
 }
@@ -528,9 +652,12 @@ function FeatureCard({ color, icon, title, text }) {
 function Step({ number, color, title, text }) {
   return (
     <div className="flex gap-4">
-      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${color} font-black text-white`}>
+      <div
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${color} font-black text-white`}
+      >
         {number}
       </div>
+
       <div>
         <h3 className="font-black">{title}</h3>
         <p className="mt-1 leading-7 text-slate-600">{text}</p>
@@ -545,6 +672,7 @@ function MiniInfo({ icon, title }) {
       <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm">
         {React.cloneElement(icon, { className: "h-6 w-6" })}
       </div>
+
       <p className="text-sm font-black">{title}</p>
     </div>
   );
@@ -554,10 +682,11 @@ function FooterColumn({ title, links }) {
   return (
     <div>
       <h3 className="font-black">{title}</h3>
+
       <div className="mt-5 space-y-3 text-sm text-slate-300">
         {links.map((link) => (
-          <a key={link} href="#" className="block hover:text-blue-400">
-            {link}
+          <a key={link.label} href={link.href} className="block hover:text-blue-400">
+            {link.label}
           </a>
         ))}
       </div>
