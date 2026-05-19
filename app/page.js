@@ -94,7 +94,7 @@ function Header() {
           <a href="/" className="text-blue-400">
             Home
           </a>
-          <a href="#live-lessons" className="hover:text-blue-400">
+          <a href="/live-lessons" className="hover:text-blue-400">
             Live Lessons
           </a>
           <a href="#resources" className="hover:text-blue-400">
@@ -123,10 +123,10 @@ function Header() {
           </a>
 
           <a
-            href="#contact"
+            href="/live-lessons"
             className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-500"
           >
-            Join a Lesson <ArrowRight className="h-4 w-4" />
+            Book a Lesson <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </div>
@@ -158,10 +158,10 @@ function Hero() {
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <a
-              href="#contact"
+              href="/live-lessons"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-7 py-4 font-bold text-white shadow-xl shadow-blue-600/30 hover:bg-blue-500"
             >
-              Join a Live Lesson
+              Book a Live Lesson
               <MonitorPlay className="h-5 w-5" />
             </a>
 
@@ -178,7 +178,8 @@ function Hero() {
             <HeroStat
               icon={<MonitorPlay />}
               title="Live Lessons"
-              text="Interactive learning"
+              text="Book interactive learning"
+              href="/live-lessons"
             />
             <HeroStat
               icon={<BookOpen />}
@@ -210,7 +211,7 @@ function Hero() {
                   <h2 className="mt-2 text-3xl font-black">
                     Quadratic Equations
                   </h2>
-                  <p className="mt-2 text-slate-600">Today, 4:00 PM</p>
+                  <p className="mt-2 text-slate-600">Book your preferred time</p>
                 </div>
 
                 <div className="rounded-2xl bg-blue-600 p-4 text-white">
@@ -223,6 +224,7 @@ function Hero() {
                   icon={<Users className="h-5 w-5" />}
                   title="Interactive class"
                   text="Ask questions and solve examples with the tutor."
+                  href="/live-lessons"
                 />
                 <HeroCard
                   icon={<BookOpen className="h-5 w-5" />}
@@ -268,7 +270,8 @@ function SuccessSection() {
             color="bg-blue-600"
             icon={<MonitorPlay />}
             title="Live Online Lessons"
-            text="Join live interactive classes, ask questions, and learn in real time."
+            text="Book interactive classes, ask questions, and learn in real time."
+            href="/live-lessons"
           />
           <FeatureCard
             color="bg-emerald-600"
@@ -446,17 +449,17 @@ function CTASection() {
                 Ready to Improve in Maths?
               </h2>
               <p className="mt-2 text-blue-50">
-                Join live lessons, access resources, submit assignments, and
+                Book live lessons, access resources, submit assignments, and
                 prepare for exams.
               </p>
             </div>
           </div>
 
           <a
-            href="tel:0704155710"
+            href="/live-lessons"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 font-black text-blue-700 hover:bg-blue-50"
           >
-            Join a Live Lesson <MonitorPlay className="h-5 w-5" />
+            Book a Live Lesson <MonitorPlay className="h-5 w-5" />
           </a>
         </div>
       </div>
@@ -492,7 +495,7 @@ function Footer() {
         <FooterColumn
           title="Quick Links"
           links={[
-            { label: "Live Lessons", href: "#live-lessons" },
+            { label: "Live Lessons", href: "/live-lessons" },
             { label: "Resources", href: "#resources" },
             { label: "Assignments", href: "/assignments" },
             { label: "Curricula", href: "#curricula" },
@@ -603,7 +606,11 @@ function HeroCard({ icon, title, text, href }) {
     );
   }
 
-  return <div className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">{content}</div>;
+  return (
+    <div className="flex gap-4 rounded-2xl bg-white p-4 shadow-sm">
+      {content}
+    </div>
+  );
 }
 
 function SectionTitle({ title, text }) {
@@ -685,7 +692,11 @@ function FooterColumn({ title, links }) {
 
       <div className="mt-5 space-y-3 text-sm text-slate-300">
         {links.map((link) => (
-          <a key={link.label} href={link.href} className="block hover:text-blue-400">
+          <a
+            key={link.label}
+            href={link.href}
+            className="block hover:text-blue-400"
+          >
             {link.label}
           </a>
         ))}
