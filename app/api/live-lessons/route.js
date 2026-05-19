@@ -3,10 +3,31 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 export async function POST(request) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing RESEND_API_KEY in Vercel environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+
     const formData = await request.formData();
 
     const studentName = formData.get("studentName");
@@ -36,31 +57,45 @@ export async function POST(request) {
       );
     }
 
-    await resend.emails.send({
+    const emailResult = await resend.emails.send({
       from: "Maths Guru Academy <onboarding@resend.dev>",
       to: "mathsguruacademy@gmail.com",
-      subject: `New Live Lesson Request - ${studentName}`,
+      subject: `New Live Lesson Request - ${escapeHtml(studentName)}`,
       html: `
-        <h2>New Live Lesson Request</h2>
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>New Live Lesson Request</h2>
 
-        <p><strong>Student Name:</strong> ${studentName}</p>
-        <p><strong>Parent / Guardian Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> ${email || "Not provided"}</p>
-        <p><strong>Preferred Time:</strong> ${preferredTime}</p>
+          <p><strong>Student Name:</strong> ${escapeHtml(studentName)}</p>
+          <p><strong>Parent / Guardian Phone:</strong> ${escapeHtml(phone)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email) || "Not provided"}</p>
+          <p><strong>Preferred Time:</strong> ${escapeHtml(preferredTime)}</p>
 
-        <hr />
+          <hr />
 
-        <p><strong>Education System:</strong> ${educationSystem}</p>
-        <p><strong>Class / Level:</strong> ${studentClass}</p>
-        <p><strong>Lesson Type:</strong> ${lessonType}</p>
-        <p><strong>Topic:</strong> ${topic || "Not provided"}</p>
+          <p><strong>Education System:</strong> ${escapeHtml(educationSystem)}</p>
+          <p><strong>Class / Level:</strong> ${escapeHtml(studentClass)}</p>
+          <p><strong>Lesson Type:</strong> ${escapeHtml(lessonType)}</p>
+          <p><strong>Topic:</strong> ${escapeHtml(topic) || "Not provided"}</p>
 
-        <hr />
+          <hr />
 
-        <p><strong>Message:</strong></p>
-        <p>${message || "No message provided."}</p>
+          <p><strong>Message:</strong></p>
+          <p>${escapeHtml(message) || "No message provided."}</p>
+        </div>
       `,
     });
+
+    if (emailResult.error) {
+      console.error("Resend error:", emailResult.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: emailResult.error.message || "Email failed to send.",
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
