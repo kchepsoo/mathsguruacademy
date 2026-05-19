@@ -58,7 +58,7 @@ export async function POST(request) {
     }
 
     const emailResult = await resend.emails.send({
-      from: "Maths Guru Academy <onboarding@resend.dev>",
+      from: "Maths Guru Academy <noreply@mathsguruacademy.com>",
       to: "mathsguruacademy@gmail.com",
       subject: `New Live Lesson Request - ${escapeHtml(studentName)}`,
       html: `
