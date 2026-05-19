@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const educationSystems = {
-  "CBC": [
+  CBC: [
     "Grade 4",
     "Grade 5",
     "Grade 6",
@@ -20,24 +20,28 @@ const educationSystems = {
     "Grade 8",
     "Grade 9",
   ],
+
   "8-4-4 / KCSE": [
-  "Form 1",
-  "Form 2",
-  "Form 3",
-  "Form 4",
-],
-  "IGCSE": [
+    "Form 1",
+    "Form 2",
+    "Form 3",
+    "Form 4",
+  ],
+
+  IGCSE: [
     "Year 7",
     "Year 8",
     "Year 9",
     "Year 10",
     "Year 11",
   ],
+
   "Cambridge A Level": [
     "AS Level",
     "A2 Level",
   ],
-  "IB": [
+
+  IB: [
     "MYP 1",
     "MYP 2",
     "MYP 3",
@@ -46,6 +50,7 @@ const educationSystems = {
     "IB DP Year 1",
     "IB DP Year 2",
   ],
+
   "SAT / AP Prep": [
     "SAT Maths Prep",
     "AP Precalculus",
@@ -60,17 +65,45 @@ export default function AssignmentsPage() {
   const [studentClass, setStudentClass] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [formStatus, setFormStatus] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   const classOptions = educationSystem
     ? educationSystems[educationSystem] || []
     : [];
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    setFormStatus(
-      "Assignment form is ready. Next we will connect this to real file upload storage."
-    );
+    setIsUploading(true);
+    setFormStatus("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/api/assignments", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setFormStatus(result.error || "Upload failed. Please try again.");
+        setIsUploading(false);
+        return;
+      }
+
+      setFormStatus("Assignment uploaded successfully.");
+      form.reset();
+      setEducationSystem("");
+      setStudentClass("");
+      setSelectedFileName("");
+    } catch (error) {
+      setFormStatus("Upload failed. Please check your connection and try again.");
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   return (
@@ -81,6 +114,7 @@ export default function AssignmentsPage() {
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-blue-700">
               <GraduationCap className="h-7 w-7" />
             </div>
+
             <div>
               <p className="text-lg font-black">
                 MATHS <span className="text-blue-400">GURU</span>
@@ -131,11 +165,13 @@ export default function AssignmentsPage() {
                 title="Choose your system"
                 text="CBC, 8-4-4 / KCSE, IGCSE, Cambridge, IB, or SAT/AP."
               />
+
               <InfoItem
                 icon={<FileText className="h-5 w-5" />}
                 title="Attach your work"
                 text="You can upload PDF, Word document, photo, or scanned work."
               />
+
               <InfoItem
                 icon={<ShieldCheck className="h-5 w-5" />}
                 title="Submit for feedback"
@@ -286,9 +322,10 @@ export default function AssignmentsPage() {
 
                 <button
                   type="submit"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500"
+                  disabled={isUploading}
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
-                  Submit Assignment
+                  {isUploading ? "Uploading Assignment..." : "Submit Assignment"}
                   <UploadCloud className="h-5 w-5" />
                 </button>
 
