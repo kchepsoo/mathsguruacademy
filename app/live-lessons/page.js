@@ -84,21 +84,47 @@ export default function LiveLessonsPage() {
   const [educationSystem, setEducationSystem] = useState("");
   const [studentClass, setStudentClass] = useState("");
   const [formStatus, setFormStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const classOptions = educationSystem
     ? educationSystems[educationSystem] || []
     : [];
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    setFormStatus(
-      "Your live lesson request has been received. We will contact you shortly."
-    );
+    setIsSubmitting(true);
+    setFormStatus("");
 
-    event.currentTarget.reset();
-    setEducationSystem("");
-    setStudentClass("");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/api/live-lessons", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setFormStatus(result.error || "Request failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      setFormStatus(
+        "Your live lesson request has been received. We will contact you shortly."
+      );
+
+      form.reset();
+      setEducationSystem("");
+      setStudentClass("");
+    } catch (error) {
+      setFormStatus("Request failed. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -174,9 +200,7 @@ export default function LiveLessonsPage() {
                   <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">
                     Lesson Request
                   </p>
-                  <h2 className="mt-2 text-3xl font-black">
-                    How it works
-                  </h2>
+                  <h2 className="mt-2 text-3xl font-black">How it works</h2>
                 </div>
 
                 <div className="rounded-2xl bg-blue-600 p-4 text-white">
@@ -395,9 +419,10 @@ export default function LiveLessonsPage() {
 
                 <button
                   type="submit"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500"
+                  disabled={isSubmitting}
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
-                  Submit Live Lesson Request
+                  {isSubmitting ? "Sending Request..." : "Submit Live Lesson Request"}
                   <CalendarDays className="h-5 w-5" />
                 </button>
 
