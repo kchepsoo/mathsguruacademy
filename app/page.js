@@ -97,7 +97,7 @@ function Header() {
           <a href="/live-lessons" className="hover:text-blue-400">
             Live Lessons
           </a>
-          <a href="#resources" className="hover:text-blue-400">
+          <a href="/resources" className="hover:text-blue-400">
             Resources
           </a>
           <a href="#curricula" className="hover:text-blue-400">
@@ -166,7 +166,7 @@ function Hero() {
             </a>
 
             <a
-              href="#resources"
+              href="/resources"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 px-7 py-4 font-bold text-white hover:bg-white/10"
             >
               <BookOpen className="h-5 w-5" />
@@ -185,6 +185,7 @@ function Hero() {
               icon={<BookOpen />}
               title="Resources"
               text="Videos, notes & more"
+              href="/resources"
             />
             <HeroStat
               icon={<UploadCloud />}
@@ -211,7 +212,9 @@ function Hero() {
                   <h2 className="mt-2 text-3xl font-black">
                     Quadratic Equations
                   </h2>
-                  <p className="mt-2 text-slate-600">Book your preferred time</p>
+                  <p className="mt-2 text-slate-600">
+                    Book your preferred time
+                  </p>
                 </div>
 
                 <div className="rounded-2xl bg-blue-600 p-4 text-white">
@@ -230,6 +233,7 @@ function Hero() {
                   icon={<BookOpen className="h-5 w-5" />}
                   title="Resource access"
                   text="Watch videos, read notes, and practise worksheets."
+                  href="/resources"
                 />
                 <HeroCard
                   icon={<FileText className="h-5 w-5" />}
@@ -278,6 +282,7 @@ function SuccessSection() {
             icon={<BookOpen />}
             title="Resources"
             text="Access video lessons, notes, worksheets, and practice materials."
+            href="/resources"
           />
           <FeatureCard
             color="bg-purple-600"
@@ -349,7 +354,7 @@ function ResourcesSection() {
             <h2 className="text-2xl font-black">
               What You’ll Find in Resources
             </h2>
-            <a href="#contact" className="text-sm font-bold text-blue-600">
+            <a href="/resources" className="text-sm font-bold text-blue-600">
               View all resources →
             </a>
           </div>
@@ -496,7 +501,7 @@ function Footer() {
           title="Quick Links"
           links={[
             { label: "Live Lessons", href: "/live-lessons" },
-            { label: "Resources", href: "#resources" },
+            { label: "Resources", href: "/resources" },
             { label: "Assignments", href: "/assignments" },
             { label: "Curricula", href: "#curricula" },
             { label: "About Us", href: "#about" },
@@ -519,7 +524,7 @@ function Footer() {
           title="Support"
           links={[
             { label: "FAQs", href: "#contact" },
-            { label: "How It Works", href: "#resources" },
+            { label: "How It Works", href: "/resources" },
             { label: "Privacy Policy", href: "#contact" },
             { label: "Terms of Service", href: "#contact" },
           ]}
