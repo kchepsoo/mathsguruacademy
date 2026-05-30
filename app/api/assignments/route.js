@@ -1,5 +1,6 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
@@ -14,16 +15,38 @@ const allowedFileTypes = [
 ];
 
 function cleanFileName(value) {
-  return value
-    .toString()
+  return String(value || "")
     .trim()
     .replace(/[^a-zA-Z0-9-_]/g, "-")
     .replace(/-+/g, "-")
     .toLowerCase();
 }
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export async function POST(request) {
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (!resendApiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing RESEND_API_KEY in Vercel environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
+
     const formData = await request.formData();
 
     const studentName = formData.get("studentName");
@@ -77,14 +100,69 @@ export async function POST(request) {
     const safeEducationSystem = cleanFileName(educationSystem);
     const safeClass = cleanFileName(studentClass);
     const safeTopic = cleanFileName(topic);
-
     const originalFileName = cleanFileName(file.name);
+
     const uploadPath = `assignments/${safeEducationSystem}/${safeClass}/${Date.now()}-${safeStudentName}-${safeTopic}-${originalFileName}`;
 
     const blob = await put(uploadPath, file, {
       access: "public",
       addRandomSuffix: true,
     });
+
+    const uploadedAt = new Date().toISOString();
+
+    const emailResult = await resend.emails.send({
+      from: "Maths Guru Academy <noreply@mathsguruacademy.com>",
+      to: ["mathsguruacademy@gmail.com"],
+      replyTo: "mathsguruacademy@gmail.com",
+      subject: `New Assignment Uploaded - ${escapeHtml(studentName)}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>New Assignment Uploaded</h2>
+
+          <p><strong>Student Name:</strong> ${escapeHtml(studentName)}</p>
+          <p><strong>Parent / Guardian Phone:</strong> ${escapeHtml(phone) || "Not provided"}</p>
+
+          <hr />
+
+          <p><strong>Education System:</strong> ${escapeHtml(educationSystem)}</p>
+          <p><strong>Class / Level:</strong> ${escapeHtml(studentClass)}</p>
+          <p><strong>Maths Topic:</strong> ${escapeHtml(topic)}</p>
+          <p><strong>Teacher / Tutor Name:</strong> ${escapeHtml(tutorName) || "Not provided"}</p>
+
+          <hr />
+
+          <p><strong>Message:</strong></p>
+          <p>${escapeHtml(message) || "No message provided."}</p>
+
+          <hr />
+
+          <p><strong>Uploaded File:</strong></p>
+          <p>
+            <a href="${blob.url}" target="_blank" rel="noopener noreferrer">
+              Open uploaded assignment
+            </a>
+          </p>
+
+          <p><strong>Original File Name:</strong> ${escapeHtml(file.name)}</p>
+          <p><strong>Uploaded At:</strong> ${escapeHtml(uploadedAt)}</p>
+        </div>
+      `,
+    });
+
+    if (emailResult.error) {
+      console.error("Resend assignment email error:", emailResult.error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            emailResult.error.message ||
+            "Assignment uploaded, but email notification failed.",
+        },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
@@ -99,7 +177,7 @@ export async function POST(request) {
         message,
         fileName: file.name,
         fileUrl: blob.url,
-        uploadedAt: new Date().toISOString(),
+        uploadedAt,
       },
     });
   } catch (error) {
