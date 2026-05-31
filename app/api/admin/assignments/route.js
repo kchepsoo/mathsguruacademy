@@ -28,8 +28,13 @@ export async function GET(request) {
       .limit(50);
 
     if (error) {
+      console.error("Supabase assignments query error:", error);
+
       return NextResponse.json(
-        { success: false, error: error.message },
+        {
+          success: false,
+          error: `Supabase assignments query error: ${error.message}`,
+        },
         { status: 500 }
       );
     }
@@ -42,7 +47,10 @@ export async function GET(request) {
     console.error("Admin assignments error:", error);
 
     return NextResponse.json(
-      { success: false, error: "Failed to load assignments." },
+      {
+        success: false,
+        error: `Assignments API error: ${error.message}`,
+      },
       { status: 500 }
     );
   }
