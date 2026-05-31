@@ -45,7 +45,18 @@ export default function AdminPage() {
       const liveLessonsResult = await liveLessonsResponse.json();
 
       if (!assignmentsResponse.ok || !liveLessonsResponse.ok) {
-        setStatus("Invalid password or dashboard could not be loaded.");
+        const assignmentError =
+          assignmentsResult.error ||
+          `Assignments API failed with status ${assignmentsResponse.status}`;
+
+        const liveLessonError =
+          liveLessonsResult.error ||
+          `Live lessons API failed with status ${liveLessonsResponse.status}`;
+
+        setStatus(
+          `Dashboard could not load. Assignments: ${assignmentError} | Live lessons: ${liveLessonError}`
+        );
+
         setIsUnlocked(false);
         return;
       }
@@ -55,7 +66,7 @@ export default function AdminPage() {
       setIsUnlocked(true);
       setStatus("Dashboard loaded successfully.");
     } catch (error) {
-      setStatus("Could not load dashboard. Please try again.");
+      setStatus(`Could not load dashboard. ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +93,8 @@ export default function AdminPage() {
 
           <h1 className="text-center text-3xl font-black">Admin Dashboard</h1>
           <p className="mt-3 text-center text-slate-300">
-            Enter your admin password to view assignment uploads and live lesson requests.
+            Enter your admin password to view assignment uploads and live lesson
+            requests.
           </p>
 
           <form onSubmit={handleLogin} className="mt-8 space-y-4">
@@ -180,6 +192,14 @@ export default function AdminPage() {
           </div>
         </header>
 
+        {status && (
+          <div className="mx-auto max-w-7xl px-6 pt-6 lg:px-8">
+            <div className="rounded-2xl bg-blue-50 px-5 py-4 text-sm font-bold text-blue-700">
+              {status}
+            </div>
+          </div>
+        )}
+
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             <StatCard
@@ -211,7 +231,9 @@ export default function AdminPage() {
           <div className="mt-8 grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
             <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200">
               <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-2xl font-black">Recent Assignment Submissions</h2>
+                <h2 className="text-2xl font-black">
+                  Recent Assignment Submissions
+                </h2>
                 <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-bold text-blue-700">
                   {assignments.length} total
                 </span>
@@ -257,7 +279,10 @@ export default function AdminPage() {
 
                     {assignments.length === 0 && (
                       <tr>
-                        <td colSpan="7" className="py-8 text-center text-slate-500">
+                        <td
+                          colSpan="7"
+                          className="py-8 text-center text-slate-500"
+                        >
                           No assignment submissions yet.
                         </td>
                       </tr>
