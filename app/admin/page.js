@@ -7,12 +7,17 @@ import {
   CheckCircle2,
   FileText,
   GraduationCap,
+  LibraryBig,
   Lock,
   LogIn,
   MonitorPlay,
   RefreshCw,
   UploadCloud,
   Users,
+  ExternalLink,
+  PlusCircle,
+  Settings,
+  Home,
 } from "lucide-react";
 
 export default function AdminPage() {
@@ -93,8 +98,8 @@ export default function AdminPage() {
 
           <h1 className="text-center text-3xl font-black">Admin Dashboard</h1>
           <p className="mt-3 text-center text-slate-300">
-            Enter your admin password to view assignment uploads and live lesson
-            requests.
+            Enter your admin password to view assignment uploads, live lesson
+            requests, and resource management tools.
           </p>
 
           <form onSubmit={handleLogin} className="mt-8 space-y-4">
@@ -146,6 +151,7 @@ export default function AdminPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-700">
             <GraduationCap className="h-7 w-7" />
           </div>
+
           <div>
             <p className="text-lg font-black">
               MATHS <span className="text-blue-400">GURU</span>
@@ -157,16 +163,19 @@ export default function AdminPage() {
         </div>
 
         <nav className="mt-10 space-y-3">
-          <SidebarLink icon={<BookOpen />} label="Dashboard" active />
-          <SidebarLink icon={<UploadCloud />} label="Assignments" />
-          <SidebarLink icon={<MonitorPlay />} label="Live Lessons" />
-          <SidebarLink icon={<Users />} label="Students" />
+          <SidebarLink icon={<BookOpen />} label="Dashboard" active href="/admin" />
+          <SidebarLink icon={<UploadCloud />} label="Assignments" href="/admin" />
+          <SidebarLink icon={<MonitorPlay />} label="Live Lessons" href="/admin" />
+          <SidebarLink icon={<LibraryBig />} label="Resources" href="/admin/resources" />
+          <SidebarLink icon={<Users />} label="Students" href="/admin" />
+          <SidebarLink icon={<Settings />} label="Settings" href="/admin" />
         </nav>
 
         <div className="absolute bottom-8 left-6 right-6 rounded-2xl border border-white/10 bg-white/10 p-5">
           <p className="text-sm font-bold">Admin access</p>
           <p className="mt-2 text-xs leading-5 text-slate-300">
-            Manage student uploads, lesson bookings, and review status.
+            Manage student uploads, lesson bookings, resources, and review
+            status.
           </p>
         </div>
       </aside>
@@ -177,18 +186,29 @@ export default function AdminPage() {
             <div>
               <h1 className="text-3xl font-black">Admin Dashboard</h1>
               <p className="mt-1 text-slate-600">
-                View student submissions and live lesson requests.
+                View submissions, manage live lesson requests, and upload
+                learning resources.
               </p>
             </div>
 
-            <button
-              onClick={() => loadDashboard(password)}
-              disabled={isLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white hover:bg-blue-500 disabled:bg-slate-400"
-            >
-              Refresh
-              <RefreshCw className="h-5 w-5" />
-            </button>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a
+                href="/"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-50"
+              >
+                Website
+                <Home className="h-5 w-5" />
+              </a>
+
+              <button
+                onClick={() => loadDashboard(password)}
+                disabled={isLoading}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white hover:bg-blue-500 disabled:bg-slate-400"
+              >
+                Refresh
+                <RefreshCw className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </header>
 
@@ -228,12 +248,52 @@ export default function AdminPage() {
             />
           </div>
 
+          <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <QuickAction
+              icon={<PlusCircle />}
+              title="Upload Resource"
+              text="Add videos, PDFs, notes, worksheets, and past papers."
+              href="/admin/resources"
+              color="bg-blue-600"
+            />
+            <QuickAction
+              icon={<LibraryBig />}
+              title="Manage Resources"
+              text="View uploaded resources and publish learning materials."
+              href="/admin/resources"
+              color="bg-emerald-600"
+            />
+            <QuickAction
+              icon={<MonitorPlay />}
+              title="Live Lessons"
+              text="Review lesson requests and contact students."
+              href="#live-lessons-section"
+              color="bg-purple-600"
+            />
+            <QuickAction
+              icon={<FileText />}
+              title="Assignments"
+              text="Open uploaded assignments and track review status."
+              href="#assignments-section"
+              color="bg-orange-600"
+            />
+          </section>
+
           <div className="mt-8 grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
-            <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200">
+            <section
+              id="assignments-section"
+              className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200"
+            >
               <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-2xl font-black">
-                  Recent Assignment Submissions
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-black">
+                    Recent Assignment Submissions
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Latest student uploads from the assignment page.
+                  </p>
+                </div>
+
                 <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-bold text-blue-700">
                   {assignments.length} total
                 </span>
@@ -265,9 +325,10 @@ export default function AdminPage() {
                             href={item.file_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-bold text-blue-600 hover:underline"
+                            className="inline-flex items-center gap-1 font-bold text-blue-600 hover:underline"
                           >
                             Open file
+                            <ExternalLink className="h-3.5 w-3.5" />
                           </a>
                         </td>
                         <td>
@@ -292,9 +353,18 @@ export default function AdminPage() {
               </div>
             </section>
 
-            <section className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200">
+            <section
+              id="live-lessons-section"
+              className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200"
+            >
               <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-2xl font-black">Live Lesson Requests</h2>
+                <div>
+                  <h2 className="text-2xl font-black">Live Lesson Requests</h2>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Students waiting for lesson confirmation.
+                  </p>
+                </div>
+
                 <span className="rounded-full bg-purple-50 px-4 py-2 text-sm font-bold text-purple-700">
                   {liveLessons.length} total
                 </span>
@@ -313,6 +383,7 @@ export default function AdminPage() {
                           {item.education_system} — {item.student_class}
                         </p>
                       </div>
+
                       <StatusBadge status={item.status} />
                     </div>
 
@@ -344,21 +415,68 @@ export default function AdminPage() {
               </div>
             </section>
           </div>
+
+          <section className="mt-8 rounded-[2rem] bg-slate-950 p-6 text-white shadow-sm">
+            <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+              <div>
+                <p className="mb-2 text-sm font-black uppercase tracking-[0.18em] text-blue-300">
+                  Resource Upload Centre
+                </p>
+                <h2 className="text-3xl font-black">
+                  Add videos, worksheets, notes, past papers, and quizzes.
+                </h2>
+                <p className="mt-3 max-w-3xl text-slate-300">
+                  Use the Resource Manager to upload learning materials with
+                  exact dropdowns for curriculum, class, topic, term, access
+                  level, and publish status.
+                </p>
+              </div>
+
+              <a
+                href="/admin/resources"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-black text-white hover:bg-blue-500"
+              >
+                Open Resource Manager
+                <LibraryBig className="h-5 w-5" />
+              </a>
+            </div>
+          </section>
         </div>
       </section>
     </main>
   );
 }
 
-function SidebarLink({ icon, label, active }) {
+function SidebarLink({ icon, label, active, href }) {
+  const content = (
+    <>
+      {React.cloneElement(icon, { className: "h-5 w-5" })}
+      {label}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={`flex items-center gap-3 rounded-xl px-4 py-3 font-bold ${
+          active
+            ? "bg-blue-600 text-white"
+            : "text-slate-300 hover:bg-white/10 hover:text-white"
+        }`}
+      >
+        {content}
+      </a>
+    );
+  }
+
   return (
     <div
       className={`flex items-center gap-3 rounded-xl px-4 py-3 font-bold ${
         active ? "bg-blue-600 text-white" : "text-slate-300"
       }`}
     >
-      {React.cloneElement(icon, { className: "h-5 w-5" })}
-      {label}
+      {content}
     </div>
   );
 }
@@ -372,12 +490,31 @@ function StatCard({ icon, title, value, color }) {
         >
           {React.cloneElement(icon, { className: "h-7 w-7" })}
         </div>
+
         <div>
           <p className="text-sm font-bold text-slate-500">{title}</p>
           <p className="text-4xl font-black">{value}</p>
         </div>
       </div>
     </div>
+  );
+}
+
+function QuickAction({ icon, title, text, href, color }) {
+  return (
+    <a
+      href={href}
+      className="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div
+        className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${color} text-white`}
+      >
+        {React.cloneElement(icon, { className: "h-7 w-7" })}
+      </div>
+
+      <h3 className="text-lg font-black">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+    </a>
   );
 }
 
